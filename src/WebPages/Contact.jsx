@@ -1,0 +1,94 @@
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+
+const Contact = () => {
+  const contactinfo = useSelector((state) => state.stored.contactStored);
+
+  const { email, phone, location, languages, locationURL} =
+    contactinfo || {};
+
+  return (
+    <>
+      <div className="page shadow-inner shadow-black">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="pageHeader">Get in touch</h1>
+
+          <div className="grid grid-cols-1 gap-5 border-l border-neutral-700 pl-6">
+            {/* Contact Intro */}
+            <div>
+              <p className="writeUp leading-relaxed mb-6">
+                I am open to professional opportunities, collaborations, and
+                general enquiries. Feel free to reach out using the details
+                provided, and I will respond as soon as possible.
+              </p>
+            </div>
+
+            {/* location map */}
+            <div className="map">
+              <iframe
+                src={locationURL}
+                width={"100%"}
+                height={550}
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
+
+            {/* Contact Details */}
+            <div className="space-y-5 writeUp flex flex-wrap gap-x-10">
+              <p>
+                <span className="writeUp">EMAIL</span> . . . .{email}
+              </p>
+              <p>
+                <span className="writeUp">PHONE</span> . . . .{phone}
+              </p>
+              <p>
+                <span className="writeUp">LOCATION</span> . . . . {location}
+              </p>
+              <p>
+                <span className="writeUp">LANGUAGES</span> . . . . {languages}
+              </p>
+            </div>
+
+            <div>
+              <h2 className="smallHeader">Contact Me</h2>
+              <form action="" className="w-full flex flex-col gap-2.5">
+                <fieldset className=" grid md:grid-cols-2 gap-3 ">
+                  <label htmlFor="">
+                    Full Name <br />
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      className="outline-0 border-b border-b-neutral-500 w-full smallHeader focus:border-tertiary focus:border-b-2"
+                    />
+                  </label>
+                  <label htmlFor="">
+                    Email Address <br />
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      className="outline-0 border-b border-b-neutral-500 w-full smallHeader focus:border-tertiary focus:border-b-2"
+                    />
+                  </label>
+                </fieldset>
+                <textarea
+                  name=""
+                  id=""
+                  className="w-full h-30 resize-none border-b border-neutral-300 outline-0 smallHeader focus:border-tertiary focus:border-b-2"
+                  placeholder="Your Message"
+                ></textarea>
+                <button className="border w-3xs button ">Send Message</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Contact;
