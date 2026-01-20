@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setReduxLogin } from "./Redux Folder";
 import { useNavigate } from "react-router-dom";
+import {signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./Firebase";
 
 const Login = () => {
-  const selectedLogin=useSelector((state)=>state.stored.LoginStored||{})
+const userData=useSelector((state)=>state.stored.user||null)
   const navigate=useNavigate()
-  const disPatch=useDispatch();
+  const dispatch=useDispatch();
   const[loginDetails, setLoginDetails]=useState({
     email:"",
     password:""
@@ -17,17 +19,28 @@ const Login = () => {
     setLoginDetails((prev)=>({...prev,[name]:value}))
   }
 
-  function submitLogin(e){
+
+  async function submitLogin(e){
     e.preventDefault()
     if(!loginDetails.email || !loginDetails.password){
       alert("please fill in all fields")
-    }else if(loginDetails.email==="owuamachuks@yahoo.com" && loginDetails.password==="admin1234"){
-      disPatch(setReduxLogin({...loginDetails,isloggedin:true}))
-      navigate("/admin")
-    }else{
-      alert("invalid credentials")
-    }
+     return
   }
+
+   try {
+    const usercredential= await signInWithEmailAndPassword(auth,loginDetails.email,loginDetails.password)
+
+    const user=usercredential.user
+    dispatch(setReduxLogin({
+        uid: user.uid,
+        email: user.email,
+      }))
+    navigate("/admin")
+   } catch (error) {
+    alert("Invalid credentials");
+    console.error(error);
+   }
+}
 
 
   return (
@@ -39,7 +52,7 @@ const Login = () => {
         <p className="text-gray-500 mb-8 text-center">
           Enter your credentials to access the admin panel
         </p>
-        <form className="space-y-6">
+        <form className="space-y-6"  onSubmit={submitLogin}>
           <div>
             <label className="block text-gray-700 mb-2" htmlFor="email">
               Email
@@ -73,7 +86,6 @@ const Login = () => {
           <button
             type="submit"
             className="w-full py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition"
-            onClick={submitLogin}
           >
             Login
           </button>

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setReduxContact } from "../Redux Folder";
+import { doc,setDoc,getDoc } from "firebase/firestore";
+import { db,auth } from "../Firebase";
 
 const ContactAdmin = () => {
+
    const contactinfo = useSelector((state) =>state.stored.contactStored);
   const dispatchContact = useDispatch();
 
@@ -25,8 +28,27 @@ const ContactAdmin = () => {
     }
   }, [contactinfo]);
 
+  useEffect(()=>{
+    async function fetchContactFromFireBase(params) {
+    const user=auth.currentUser
+    if(!user) return;
+      const contactRef=doc(db,"users",user.uid,"contact","profile")
+      const savedData= await getDoc(contactRef)
 
-  function submitContact() {
+      if(savedData.exists()){
+        dispatchContact(setReduxContact(savedData.data()))
+      }
+    }
+
+    fetchContactFromFireBase();
+  },[dispatchContact])
+
+
+  async function submitContact() {
+  const user=auth.currentUser
+   if(!user) return;
+   const contactRef= doc(db,"users",user.uid,"contact","profile")
+   await setDoc(contactRef,contactForm)
     dispatchContact(setReduxContact(contactForm));
   }
 

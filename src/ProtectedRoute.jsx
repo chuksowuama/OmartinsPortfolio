@@ -5,9 +5,9 @@ import { Navigate } from 'react-router-dom';
 
 
 const ProtectedRoute = ({children}) => {
-     const selectedLogin=useSelector((state)=>state.stored.LoginStored||{})
+    const userData=useSelector((state)=>state.stored.user||null)
 
-     if(selectedLogin.isloggedin){
+     if(userData){
         return children;
      }
      return <Navigate to={"/login"} replace />

@@ -11,7 +11,7 @@ const myProfile = createSlice({
     educationStored: [],
     certificateStored: [],
     leadershipStored: [],
-    LoginStored:{}
+    user:null
   },
 
   reducers: {
@@ -19,52 +19,39 @@ const myProfile = createSlice({
     settReduxAbout: (state, action) => {
       state.aboutStored = action.payload;
     },
+    setReduxBulkAbout:(state,action)=>{
+      state.aboutStored=action.payload
+    },
     setReduxTechnicalSkills: (state, action) => {
-      const ID = state.technicalSkillsStored.length
-        ? Number(
-            state.technicalSkillsStored[state.technicalSkillsStored.length - 1]
-              .id + 1
-          )
-        : 1;
-      console.log(ID);
       if (!Array.isArray(state.technicalSkillsStored)) {
         state.technicalSkillsStored = [];
       }
-      state.technicalSkillsStored.push({ ...action.payload, id: ID });
+      const item=action.payload;
+      state.technicalSkillsStored.push(item);
     },
 
     setReduxEducation: (state, action) => {
       if (!Array.isArray(state.educationStored)) {
         state.educationStored = [];
       }
-
-      const ID = state.educationStored.length
-        ? Number(state.educationStored[state.educationStored.length - 1].id + 1)
-        : 1;
-
-      state.educationStored.push({ ...action.payload, id: ID });
+      const item=action.payload;
+      state.educationStored.push(item);
     },
 
     setReduxCertificate: (state, action) => {
       if (!Array.isArray(state.certificateStored)) {
         state.certificateStored = [];
       }
-      const ID = state.certificateStored.length
-        ? Number(
-            state.certificateStored[state.certificateStored.length - 1].id + 1
-          )
-        : 1;
-      state.certificateStored.push({ ...action.payload, id: ID });
+       const item=action.payload;
+      state.certificateStored.push(item);
     },
 
     setReduxLeadership: (state, action) => {
       if (!Array.isArray(state.leadershipStored)) {
         state.leadershipStored = [];
       }
-      const ID = state.leadershipStored.length
-        ? state.leadershipStored[state.leadershipStored.length - 1].id + 1
-        : 1;
-      state.leadershipStored.push({ ...action.payload, id: ID });
+      const item=action.payload;
+      state.leadershipStored.push(item);
     },
 
     // contact reducer function
@@ -77,21 +64,24 @@ const myProfile = createSlice({
       if (!Array.isArray(state.resumeStored)) {
         state.resumeStored = [];
       }
-      const ID = state.resumeStored.length
-        ? state.resumeStored[state.resumeStored.length - 1].id + 1
-        : 1;
-      state.resumeStored.push({ ...action.payload, id: ID });
+      const item=action.payload
+      state.resumeStored.push(item)
     },
 
+      setReduxBulkResume:(state,action)=>{
+      state.resumeStored=action.payload
+    },
     // work reducer function
     setReduxWork: (state, action) => {
       if (!Array.isArray(state.workStored)) {
         state.workStored = [];
       }
-      const ID = state.workStored.length
-        ? state.workStored[state.workStored.length - 1].id + 1
-        : 1;
-      state.workStored.push({ ...action.payload, id: ID });
+        const item=action.payload
+      state.workStored.push(item);
+    },
+
+    setReduxBulkwork:(state,action)=>{
+      state.workStored=action.payload
     },
 
     // Remove an item from the state
@@ -100,6 +90,7 @@ const myProfile = createSlice({
         (item) => item.id !== action.payload
       );
     },
+
     removeReduxWork: (state, action) => {
       state.workStored = state.workStored.filter(
         (item) => item.id !== action.payload
@@ -128,7 +119,7 @@ const myProfile = createSlice({
     },
 
     setReduxLogin:(state,action)=>{
-      state.LoginStored=action.payload
+      state.user=action.payload
     }
 
     //  updatedReduxResume:(state,action)=>{
@@ -157,6 +148,9 @@ export const {
   removeSkills,
   removeReduxWork,
   removeReduxResume,
-  setReduxLogin
+  setReduxBulkwork,
+  setReduxBulkResume,
+  setReduxLogin,
+  setReduxBulkAbout,
 } = myProfile.actions;
 export default myProfile.reducer;

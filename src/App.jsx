@@ -4,8 +4,16 @@ import { Links, Route, Routes } from "react-router-dom"
 import Login from "./Login"
 import Admin from "./Adminfolder/Admin"
 import ProtectedRoute from "./ProtectedRoute"
+import { useDispatch } from "react-redux"
+import { ListenerAuth } from "./Authlistener"
 
 function App() {
+const dispatch=useDispatch()
+
+useEffect(()=>{
+     const unsubscribe = ListenerAuth(dispatch);
+    return () => unsubscribe();
+},[dispatch])
 
   return (
     <>

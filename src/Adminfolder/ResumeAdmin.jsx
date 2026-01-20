@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeReduxResume, settReduxResume } from "../Redux Folder";
+import { removeReduxResume, setReduxBulkResume, settReduxResume } from "../Redux Folder";
+import { db,auth } from "../Firebase";
+import { addDoc, collection, deleteDoc, getDocs } from "firebase/firestore";
 
 const ResumeAdmin = () => {
   const dispatchResume = useDispatch();
+  const [loading, setLoading]=useState(false);
   const Resumeinfo = useSelector((state) => state.stored.resumeStored||[]);
   const [resumeForm, setResumeForm] = useState({
     id: 1,
@@ -15,14 +18,51 @@ const ResumeAdmin = () => {
     responsibilities: "",
   });
 
+  useEffect(()=>{
+    async function fetchResumeFromFirebase(){
+     const user=auth.currentUser;
+    if(!user) return;
+    try {
+      const resumeRef= collection(db,"users",user.uid,"resumes");
+      const fetchedData= await getDocs(resumeRef);
+      const allResumes= fetchedData.docs.map((doc)=>({
+        id:doc.id,
+        ...doc.data()
+      }))
+
+      dispatchResume(setReduxBulkResume(allResumes));
+    } catch (error) {
+      console.log(error)
+    }
+    }
+
+    fetchResumeFromFirebase();
+  },[dispatchResume])
+
+
   function handleResume(e) {
     const { name, value } = e.target;
     setResumeForm((prev) => ({ ...prev, [name]: value }));
   }
   
-  function SubmitResume() {
-    const ID = Resumeinfo.length ? Resumeinfo[Resumeinfo.length - 1].id + 1 : 1;
-    dispatchResume(settReduxResume({ ...resumeForm, id: ID }));
+  async function SubmitResume() {
+    if(!resumeForm.jobTitle || !resumeForm.Company) return;
+
+    const user= auth.currentUser;
+    if(!user) return;
+    setLoading(true)
+    try {
+      const resumeRef= collection(db,"users",user.uid,"resumes");
+      const docRef= await addDoc (resumeRef,resumeForm)
+      dispatchResume(settReduxResume({ ...resumeForm, id: docRef.id}));
+      
+    } catch (error) {
+      console.log(error)
+    }finally{
+     setLoading(false)
+    }
+
+
     setResumeForm({
       jobTitle: "",
       Company: "",
@@ -31,11 +71,17 @@ const ResumeAdmin = () => {
       responsibilities: "",
     });
   }
-  function handleDelete(id) {
+
+
+   async function handleDelete(id) {
     const confirmDelete = window.confirm("SURE YOU WANT TO DELETE?");
-    if (confirmDelete) {
-      dispatchResume(removeReduxResume(id));
-    }
+    if (!confirmDelete) return;
+
+    const user = auth.currentUser;
+    if(!user) return;
+     const resumeRef= doc(db,"users",user.uid,"resumes",id);
+     await deleteDoc(resumeRef);
+     dispatchResume(removeReduxResume(id))
   }
 
   return (
@@ -97,7 +143,7 @@ const ResumeAdmin = () => {
             <div className="button text-primary border-b border-nuetral-700">
               <h2 className="flex justify-between mb-2">
                 {item.jobTitle}{" "}
-                <button onClick={() => handleDelete(item.id)}>cancel</button>
+                <button onClick={() => handleDelete(item.id)} disabled={loading}>cancel</button>
               </h2>
             </div>
           ))}

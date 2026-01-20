@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 const Workd = () => {
   const workData=useSelector((state)=>state.stored.workStored??[])
 
-  
+  console.log(workData)
 
   return (
     <>

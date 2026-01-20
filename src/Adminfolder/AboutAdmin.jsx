@@ -5,28 +5,23 @@ import {
   removeEdu,
   removeLeader,
   removeSkills,
+  setReduxBulkAbout,
   setReduxCertificate,
   setReduxEducation,
   setReduxLeadership,
   setReduxTechnicalSkills,
   settReduxAbout,
 } from "../Redux Folder";
+import { auth, db } from "../Firebase";
+import { addDoc, collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 
 const AboutAdmin = () => {
   const dispatchAbout = useDispatch();
   const selectedabout = useSelector((state) => state.stored.aboutStored ?? {});
-  const selectedSkills = useSelector(
-    (state) => state.stored.technicalSkillsStored ?? []
-  );
-  const selectedEdu = useSelector(
-    (state) => state.stored.educationStored ?? []
-  );
-  const selectedcert = useSelector(
-    (state) => state.stored.certificateStored ?? []
-  );
-  const selectedLeader = useSelector(
-    (state) => state.stored.leadershipStored ?? []
-  );
+const selectedSkills = useSelector((state) => state.stored.technicalSkillsStored ?? []);
+const selectedEdu = useSelector((state) => state.stored.educationStored ?? []);
+const selectedcert = useSelector((state) => state.stored.certificateStored ?? []);
+const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? []);
 
   const [AboutForm, setAboutForm] = useState({
     professionalSumary: "",
@@ -56,6 +51,8 @@ const AboutAdmin = () => {
     leadershipResponsibilities: "",
   });
 
+    /* ================= FORM HANDLER ================= */
+
   function HandleAbout(e) {
     const { name, value } = e.target;
     setAboutForm((prev) => ({ ...prev, [name]: value }));
@@ -79,56 +76,116 @@ const AboutAdmin = () => {
     const { name, value } = e.target;
     setLeadership((prev) => ({ ...prev, [name]: value }));
   }
+  /* ================= FETCH DATA ================= */
 
-  //--------------------------------------------
+  useEffect(()=>{
+    async function fetchAboutFromFirebase(){
+      const user=auth.currentUser;
+      if(!user) return;
+      try{
+        const aboutRef=doc(db,"users",user.uid,"About","AboutDetails")
+        const aboutAdminData= await getDoc(aboutRef);
+        if(aboutAdminData.exists()){
+          dispatchAbout(setReduxBulkAbout(aboutAdminData.data()))
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchAboutFromFirebase();
+  },[dispatchAbout])
 
-  function addTechnicalSkill() {
+  //===========================Technical skill Function====================//
+
+  async function addTechnicalSkill() {
     if (!skills.skillName.trim() || !skills.skillDescription.trim()) return;
-    dispatchAbout(setReduxTechnicalSkills(skills));
-    setSkills({
+    
+    const user=auth.currentUser
+    if(!user) return;
+    try {
+      const skillRef= collection(db,"users",user.uid,"technicalskills")
+      const skillData=await addDoc(skillRef,skills)
+      dispatchAbout(setReduxTechnicalSkills({...skills, id:skillData.id}));
+
+      setSkills({
       skillName: "",
       skillIconClass: "",
       skillDescription: "",
     });
+    } catch (error) {
+      console.log(error)
+    }finally{
+
+    }
   }
 
-  function addEducation() {
-    if (!education.degreeInstitution.trim() && !education.yearsAttended.trim())
+  //==================Education Function===================
+  async function addEducation() {
+    if (!education.degreeInstitution.trim() || !education.yearsAttended.trim())
       return;
-    dispatchAbout(setReduxEducation(education));
-    setEducation({
+     const user=auth.currentUser
+    if(!user) return;
+      try {
+        const eduRef= collection(db,"users",user.uid,"educations")
+        const eduData= await addDoc(eduRef,education)
+        dispatchAbout(setReduxEducation({...education, id:eduData.id}))
+
+      setEducation({
       degreeInstitution: "",
       yearsAttended: "",
     });
+      } catch (error) {
+        console.log(error)
+      }
   }
-  function addLeadership() {
+
+  //==================Leadership Function====================
+  async function addLeadership() {
     if (
       !leadership.roleOrganization.trim() ||
       !leadership.leadershipResponsibilities.trim()
-    )
-      return;
-    dispatchAbout(setReduxLeadership(leadership));
-    setLeadership({
+    )return;
+    const user=auth.currentUser
+    if(!user) return;
+    try{
+     const leadRef= collection(db,"users",user.uid,"leaderships")
+     const leadData= await addDoc(leadRef,leadership)
+     dispatchAbout(setReduxLeadership({...leadership, id:leadData.id}));
+      setLeadership({
       roleOrganization: "",
       leadershipYears: "",
       leadershipResponsibilities:""
     });
+    }catch(error){
+     console.log(error)
+    }
   }
 
-  function addCertificate() {
+  //==================Certificate Function====================
+
+  async function addCertificate() {
     if (
       !certificate.certificationName.trim() ||
       !certificate.certificationYear.trim()
-    )
-      return;
-    dispatchAbout(setReduxCertificate(certificate));
-    setcertificate({
+    )return;
+
+    const user=auth.currentUser
+    try {
+    const certRef= collection(db,"users",user.uid,"certificates")
+    const docRef= await addDoc(certRef,certificate)
+    dispatchAbout(setReduxCertificate({...certificate,id:docRef.id}));
+        setcertificate({
       certificationName: "",
       certificationYear: "",
     });
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  function submitAbout() {
+    /* ================= SUBMIT ABOUTADMIN ================= */
+
+  async function submitAbout() {
     const AboutFullForm = {
       ...AboutForm,
       technicalSkills: selectedSkills,
@@ -136,7 +193,13 @@ const AboutAdmin = () => {
       certificate: selectedcert,
       leadership: selectedLeader,
     };
-    dispatchAbout(settReduxAbout({ ...AboutFullForm }));
+
+    const user= auth.currentUser
+    if(!user) return;
+      const aboutRef=doc(db,"users",user.uid,"About","AboutDetails")
+      await setDoc(aboutRef,AboutFullForm)
+     dispatchAbout(settReduxAbout({ ...AboutFullForm }));    
+
     setSkills({
       skillName: "",
       skillIconClass: "",
@@ -155,41 +218,63 @@ const AboutAdmin = () => {
       leadershipYears: "",
 
     });
+
+
   }
 
+
+  /* ================= AUTO FILL THE FORM ================= */
   useEffect(() => {
     if (selectedabout && Object.keys(selectedabout).length > 0) {
-      setAboutForm(selectedabout);
+      setAboutForm({
+        professionalSumary: selectedabout.professionalSumary ?? "",
+        fullName: selectedabout.fullName ?? "",
+      });
     }
   }, [selectedabout]);
 
-  function handleDeleteSKill(id) {
+
+    /* ================= DELETE ABOUT ADMIN ================= */
+
+  async function handleDeleteSKill(id) {
     const confirmDelete = window.confirm("Are you sure to delete skill");
-    if (confirmDelete) {
+    if (!confirmDelete) return;
+    const user=auth.currentUser
+    if(!user) return;
+    const skillref=doc(db,"users",user.uid,"technicalskills",id)
+    await deleteDoc(skillref)
       dispatchAbout(removeSkills(id));
-    }
   }
 
-  function handleDeleteEdu(id) {
+  async function handleDeleteEdu(id) {
     const confirmDelete = window.confirm("Are you sure to delete skill");
-    if (confirmDelete) {
+    if (!confirmDelete) return;
+     const user= auth.currentUser;
+     if(!user)return;
+     const eduref=doc(db,"users",user.uid,"educations",id)
+     await deleteDoc(eduref)
       dispatchAbout(removeEdu(id));
-    }
   }
 
-  function handleDeleteCertification(id) {
+  async function handleDeleteCertification(id) {
     const confirmDelete = window.confirm("Are you sure to delete skill");
-    if (confirmDelete) {
+    if (!confirmDelete) return;
+    const user= auth.currentUser;
+    if(!user) return;
+    const certtRef=doc(db,"users",user.uid,"certificates",id)
+    await deleteDoc(certtRef)
       dispatchAbout(removeCert(id));
-    }
   }
 
-  function handleDeleteLeadership(id) {
+  async function handleDeleteLeadership(id) {
     const confirmDelete = window.confirm("Are you sure to delete skill");
-    if (confirmDelete) {
+    if (!confirmDelete) return;
+    const user= auth.currentUser;
+    if(!user) return;
+    const leadRef=doc(db,"users",user.uid,"leaderships",id)
+    await deleteDoc(leadRef)
       dispatchAbout(removeLeader(id));
     }
-  }
   //  function handleDelele(id) {
   //   const confirmDelete = window.confirm("Are you sure to delete skill");
   //   if (confirmDelete) {
@@ -363,7 +448,7 @@ const AboutAdmin = () => {
           <div>
             {selectedEdu.length > 0 &&
               selectedEdu.map((item) => (
-                <div className="button text-primary border-b border-nuetral-700">
+                <div className="button text-primary border-b border-neutral-700">
                   <h2 className="flex justify-between mb-2">
                     {item.degreeInstitution}{" "}
                     <button onClick={() => handleDeleteEdu(item.id)}>
@@ -380,7 +465,7 @@ const AboutAdmin = () => {
           <div>
             {selectedSkills.length > 0 &&
               selectedSkills.map((item) => (
-                <div className="button text-primary border-b border-nuetral-700">
+                <div className="button text-primary border-b border-neutral-700">
                   <h2 className="flex justify-between mb-2">
                     {item.skillName}{" "}
                     <button onClick={() => handleDeleteSKill(item.id)}>
@@ -396,7 +481,7 @@ const AboutAdmin = () => {
           <div>
             {selectedcert.length > 0 &&
               selectedcert.map((item) => (
-                <div className="button text-primary border-b border-nuetral-700">
+                <div className="button text-primary border-b border-neutral-700">
                   <h2 className="flex justify-between mb-2">
                     {item.certificationName}{" "}
                     <button onClick={() => handleDeleteCertification(item.id)}>
@@ -412,26 +497,10 @@ const AboutAdmin = () => {
           <div>
             {selectedLeader.length > 0 &&
               selectedLeader.map((item) => (
-                <div className="button text-primary border-b border-nuetral-700">
+                <div className="button text-primary border-b border-neutral-700">
                   <h2 className="flex justify-between mb-2">
                     {item.roleOrganization}{" "}
                     <button onClick={() => handleDeleteLeadership(item.id)}>
-                      cancel
-                    </button>
-                  </h2>
-                </div>
-              ))}
-          </div>
-        </div>
-                <div className="bg-white rounded-2xl shadow p-6 mt-6">
-          <h2 className="text-xl font-semibold mb-4">Education</h2>
-          <div>
-            {selectedEdu.length > 0 &&
-              selectedEdu.map((item) => (
-                <div className="button text-primary border-b border-nuetral-700">
-                  <h2 className="flex justify-between mb-2">
-                    {item.degreeInstitution}/{item.yearsAttended}
-                    <button onClick={() => handleDeleteEdu(item.id)}>
                       cancel
                     </button>
                   </h2>
