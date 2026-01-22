@@ -13,6 +13,7 @@ import {
   doc,
   getDocs,
 } from "firebase/firestore";
+const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
 
 const WorksAdmin = () => {
   const dispatchWork = useDispatch();
@@ -31,10 +32,8 @@ const WorksAdmin = () => {
 
   useEffect(() => {
     async function fetchworkfromFirebase() {
-      const user = auth.currentUser;
-      if (!user) return;
 
-      const workref = collection(db, "users", user.uid, "works");
+      const workref = collection(db, "users",PORTFOLIOID, "works");
 
       const fetchedData = await getDocs(workref);
 
