@@ -19,12 +19,6 @@ useEffect(()=>{
 },[dispatch,location.pathname])
   return (
     <>
-    {/* //netlify form handleDeleteCertification */}
-        <form name="contact" data-netlify="true" hidden>
-        <input type="text" name="fullname" />
-        <input type="email" name="email" />
-        <textarea name="message"></textarea>
-      </form>
     <Routes>
       <Route path="/" element={<Portfolio/>}/>
       <Route path="/admin" element={<ProtectedRoute><Admin/></ProtectedRoute>}/>
