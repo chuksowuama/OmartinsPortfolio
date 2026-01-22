@@ -14,6 +14,7 @@ import {
 } from "../Redux Folder";
 import { auth, db } from "../Firebase";
 import { addDoc, collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
 
 const AboutAdmin = () => {
   const dispatchAbout = useDispatch();
@@ -80,10 +81,8 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
 
   useEffect(()=>{
     async function fetchAboutFromFirebase(){
-      const user=auth.currentUser;
-      if(!user) return;
       try{
-        const aboutRef=doc(db,"users",user.uid,"About","AboutDetails")
+        const aboutRef=doc(db,"users",PORTFOLIOID,"About","AboutDetails")
         const aboutAdminData= await getDoc(aboutRef);
         if(aboutAdminData.exists()){
           dispatchAbout(setReduxBulkAbout(aboutAdminData.data()))

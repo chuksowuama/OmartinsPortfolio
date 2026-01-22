@@ -3,14 +3,15 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { removeReduxResume, setReduxBulkResume, settReduxResume } from "../Redux Folder";
 import { db,auth } from "../Firebase";
-import { addDoc, collection, deleteDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDocs,doc } from "firebase/firestore";
+const PORTFOLIOID = "tK6b1sApDYThYpar7EwbIE3EtoB3";
+
 
 const ResumeAdmin = () => {
   const dispatchResume = useDispatch();
   const [loading, setLoading]=useState(false);
   const Resumeinfo = useSelector((state) => state.stored.resumeStored||[]);
   const [resumeForm, setResumeForm] = useState({
-    id: 1,
     jobTitle: "",
     Company: "",
     Location: "",
@@ -20,10 +21,8 @@ const ResumeAdmin = () => {
 
   useEffect(()=>{
     async function fetchResumeFromFirebase(){
-     const user=auth.currentUser;
-    if(!user) return;
     try {
-      const resumeRef= collection(db,"users",user.uid,"resumes");
+      const resumeRef= collection(db,"users",PORTFOLIOID,"resumes");
       const fetchedData= await getDocs(resumeRef);
       const allResumes= fetchedData.docs.map((doc)=>({
         id:doc.id,

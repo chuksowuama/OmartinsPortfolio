@@ -1,26 +1,31 @@
-import React from "react";
-import { technicalSkills } from "../assets/Data";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../Firebase";
+const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
 
 const About = () => {
-  const selectedabout = useSelector((state) => state.stored.aboutStored||{});
-  const selectedSkills = useSelector(
-    (state) => state.stored.technicalSkillsStored ?? []
-  );
-  const selectedEdu = useSelector(
-    (state) => state.stored.educationStored ?? []
-  );
-  const selectedcert = useSelector(
-    (state) => state.stored.certificateStored ?? []
-  );
-  const selectedLeader = useSelector(
-    (state) => state.stored.leadershipStored ?? []
-  );
+const[aboutData,setAboutData]=useState(null);
 
+  useEffect(()=>{
+    async function fetchAboutFromFirebase(){
+     const aboutRef=doc(db,"users",PORTFOLIOID,"About","AboutDetails");
+      const savedData= await getDoc(aboutRef);
+      if(savedData.exists()){
+         setAboutData(savedData.data());
+      }
+    }
+    fetchAboutFromFirebase();
+  },[])
+
+  if(!aboutData) return null
   const {
-    professionalSumary,
     fullName,
-  } = selectedabout;
+    professionalSumary,
+    technicalSkills = [],
+    Education = [],
+    certificate = [],
+    leadership = [],
+  }=aboutData;
 
   return (
     <>
@@ -47,7 +52,7 @@ const About = () => {
 
             <div className="space-y-10 relative border-l border-neutral-700 pl-6">
               {
-                selectedEdu.map((item)=>(
+                Education.map((item)=>(
                  <div>
                 <span className="text-xs text-gray-400">{item.yearsAttended}</span>
                 <h3 className="mt-2 font-medium">
@@ -63,8 +68,8 @@ const About = () => {
             <h2 className="smallHeader mb-6">Technical Skills</h2>
 
             <div className="flex flex-wrap gap-4 writeUp">
-              {selectedSkills.length &&
-                selectedSkills.map((skills) => (
+              {technicalSkills.length &&
+                technicalSkills.map((skills) => (
                   <div className="flex sm:flex-col md:flex-row items-center gap-4  p-4 rounded-md border border-secondary w-full sm:w-[48%]">
                     <div className="w-12 h-12 flex items-center justify-center rounded-full border border-yellow-400 text-yellow-400">
                       <i
@@ -87,11 +92,11 @@ const About = () => {
           <section>
             <h2 className="smallHeader">Leadership Experience</h2>
             <div className="border-b border-neutral-400">
-               {selectedLeader.map((item) => (
+               {leadership.map((item) => (
               <p className="writeUp">
                 <span>{item.roleOrganization}</span>
                 <span>{item.leadershipYears}</span> <br />
-                <pre className="mt-2">{item.leadershipResponsibilities}</pre>
+                <p className="mt-2 whitespace-pre-line">{item.leadershipResponsibilities}</p>
               </p>
             ))}
             </div>
@@ -101,7 +106,7 @@ const About = () => {
             <h2 className="text-lg font-semibold mb-3">Certification</h2>
             <div className="writeUp border-b border-neutral-400">
               {
-                selectedcert.map((item)=>(
+                certificate.map((item)=>(
                   <p className="writeUp mt-1"><span>{item.certificationName}</span> <span>{item.certificationYear}</span></p>
                 ))
               }
@@ -114,3 +119,18 @@ const About = () => {
 };
 
 export default About;
+
+
+//  const selectedabout = useSelector((state) => state.stored.aboutStored||{});
+//   const selectedSkills = useSelector(
+//     (state) => state.stored.technicalSkillsStored ?? []
+//   );
+//   const selectedEdu = useSelector(
+//     (state) => state.stored.educationStored ?? []
+//   );
+//   const selectedcert = useSelector(
+//     (state) => state.stored.certificateStored ?? []
+//   );
+//   const selectedLeader = useSelector(
+//     (state) => state.stored.leadershipStored ?? []
+//   );

@@ -1,10 +1,10 @@
-import React, { useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 const PORTFOLIOID = "tK6b1sApDYThYpar7EwbIE3EtoB3";
-import { doc,setDoc,getDoc } from "firebase/firestore";
-import { db,auth } from "../Firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db, auth } from "../Firebase";
 const Contact = () => {
-    const [contactinfo, setContactInfo] = useState({
+  const [contactinfo, setContactInfo] = useState({
     email: "",
     phone: "",
     location: "",
@@ -29,11 +29,16 @@ const Contact = () => {
     fetchContact();
   }, []);
 
-  const { email, phone, location, languages, locationURL} =
-    contactinfo || {};
+  const { email, phone, location, languages, locationURL } = contactinfo || {};
 
   return (
     <>
+      <form name="contact" data-netlify="true" hidden>
+        <input type="text" name="fullname" />
+        <input type="email" name="email" />
+        <textarea name="message"></textarea>
+      </form>
+
       <div className="page shadow-inner shadow-black">
         <div className="max-w-4xl mx-auto">
           <h1 className="pageHeader">Get in touch</h1>
@@ -79,34 +84,47 @@ const Contact = () => {
 
             <div>
               <h2 className="smallHeader">Contact Me</h2>
-              <form action="" className="w-full flex flex-col gap-2.5 " netlify>
+              <form
+                className="w-full flex flex-col gap-2.5 "
+                name="contact"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+              >
+                <input type="hidden" name="form-name" value="contact" />
+                <input type="hidden" name="bot-field" id="bot-field" />
                 <fieldset className=" grid md:grid-cols-2 gap-3 ">
                   <label htmlFor="">
                     Full Name <br />
                     <input
                       type="text"
-                      name=""
-                      id=""
+                      name="fullname"
+                      id="fullname"
+                      required
                       className="outline-0 border-b border-b-neutral-500 w-full smallHeader focus:border-tertiary focus:border-b-2"
                     />
                   </label>
                   <label htmlFor="">
                     Email Address <br />
                     <input
-                      type="text"
-                      name=""
-                      id=""
+                      type="email"
+                      name="email"
+                      id="email"
+                      required
                       className="outline-0 border-b border-b-neutral-500 w-full smallHeader focus:border-tertiary focus:border-b-2"
                     />
                   </label>
                 </fieldset>
                 <textarea
-                  name=""
-                  id=""
+                  name="message"
+                  required
+                  id="message"
                   className="w-full h-30 resize-none border-b border-neutral-300 outline-0 smallHeader focus:border-tertiary focus:border-b-2"
                   placeholder="Your Message"
                 ></textarea>
-                <button className="border w-3xs button ">Send Message</button>
+                <button className="border w-3xs button " type="submit">
+                  Send Message
+                </button>
               </form>
             </div>
           </div>
