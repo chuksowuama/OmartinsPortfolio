@@ -33,12 +33,6 @@ const Contact = () => {
 
   return (
     <>
-      <form name="contact" data-netlify="true" hidden>
-        <input type="text" name="fullname" />
-        <input type="email" name="email" />
-        <textarea name="message"></textarea>
-      </form>
-
       <div className="page shadow-inner shadow-black">
         <div className="max-w-4xl mx-auto">
           <h1 className="pageHeader">Get in touch</h1>
