@@ -1,8 +1,32 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+const PORTFOLIOID = "tK6b1sApDYThYpar7EwbIE3EtoB3";
 
 const Contact = () => {
-  const contactinfo = useSelector((state) => state.stored.contactStored);
+    const [contactinfo, setContactInfo] = useState({
+    email: "",
+    phone: "",
+    location: "",
+    languages: "",
+    locationURL: "",
+  });
+  // const contactinfo = useSelector((state) => state.stored.contactStored);
+
+  useEffect(() => {
+    async function fetchContact() {
+      try {
+        const contactRef = doc(db, "users", PORTFOLIOID, "contact", "profile");
+        const savedData = await getDoc(contactRef);
+        if (savedData.exists()) {
+          setContactInfo(savedData.data());
+        }
+      } catch (err) {
+        console.error("Error fetching contact info:", err);
+      }
+    }
+
+    fetchContact();
+  }, []);
 
   const { email, phone, location, languages, locationURL} =
     contactinfo || {};
@@ -54,7 +78,7 @@ const Contact = () => {
 
             <div>
               <h2 className="smallHeader">Contact Me</h2>
-              <form action="" className="w-full flex flex-col gap-2.5">
+              <form action="" className="w-full flex flex-col gap-2.5 " netlify>
                 <fieldset className=" grid md:grid-cols-2 gap-3 ">
                   <label htmlFor="">
                     Full Name <br />
