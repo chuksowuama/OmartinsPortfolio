@@ -1,10 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
+import { doc,setDoc,collection, getDocs } from "firebase/firestore";
+import { db} from "../Firebase";
+const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
 const Workd = () => {
-  const workData=useSelector((state)=>state.stored.workStored??[])
+    const [WorkData, setWorkData] = useState([]);
+  
 
-  console.log(workData)
+  console.log(WorkData)
+
+    useEffect(() => {
+      async function fetchworkfromFirebase() {
+  
+        const workref = collection(db, "users",PORTFOLIOID, "works");
+  
+        const fetchedData = await getDocs(workref);
+  
+        const allProjects = fetchedData.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+  
+       setWorkData(allProjects)
+      }
+  
+      fetchworkfromFirebase();
+    }, []);
 
   return (
     <>
@@ -19,7 +40,7 @@ const Workd = () => {
         {/* Card */}
 
         {
-          workData.map((item)=>(
+          WorkData.map((item)=>(
           <a href={item.projectURL} className="block" target="_blank" rel="rel noreferrer" >
           <div className="bg-[#262626] p-4">
           <img

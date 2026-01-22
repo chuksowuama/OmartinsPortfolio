@@ -1,7 +1,8 @@
 import React, { useEffect,useState} from "react";
 import { useSelector } from "react-redux";
 const PORTFOLIOID = "tK6b1sApDYThYpar7EwbIE3EtoB3";
-
+import { doc,setDoc,getDoc } from "firebase/firestore";
+import { db,auth } from "../Firebase";
 const Contact = () => {
     const [contactinfo, setContactInfo] = useState({
     email: "",
