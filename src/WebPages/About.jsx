@@ -67,10 +67,10 @@ const[aboutData,setAboutData]=useState(null);
           <section>
             <h2 className="smallHeader mb-6">Technical Skills</h2>
 
-            <div className="flex flex-wrap gap-4 writeUp">
+            <div className="grid grid-cols-2 gap-4 writeUp">
               {technicalSkills.length &&
                 technicalSkills.map((skills) => (
-                  <div className="flex sm:flex-col md:flex-row items-center gap-4  p-4 rounded-md border border-secondary w-full sm:w-[48%]">
+                  <div className="flex sm:flex-col md:flex-row items-center gap-4  p-4 rounded-md border border-secondary w-full ">
                     <div className="w-12 h-12 flex items-center justify-center rounded-full border border-yellow-400 text-yellow-400">
                       <i
                         className={`fa-brands ${skills.skillIconClass} text-xl`}
