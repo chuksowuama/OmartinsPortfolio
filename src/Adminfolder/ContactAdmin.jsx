@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setReduxContact } from "../Redux Folder";
 import { doc,setDoc,getDoc } from "firebase/firestore";
 import { db,auth } from "../Firebase";
+const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
 
 const ContactAdmin = () => {
 
@@ -30,9 +31,7 @@ const ContactAdmin = () => {
 
   useEffect(()=>{
     async function fetchContactFromFireBase(params) {
-    const user=auth.currentUser
-    if(!user) return;
-      const contactRef=doc(db,"users",user.uid,"contact","profile")
+      const contactRef=doc(db,"users",PORTFOLIOID,"contact","profile")
       const savedData= await getDoc(contactRef)
 
       if(savedData.exists()){
