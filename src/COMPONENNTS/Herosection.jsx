@@ -45,21 +45,22 @@ const Herosection = () => {
         }
       </Swiper>
           {/* <img src={heroimg} alt="" className="w-full h-full object-cover" /> */}
-          <div className="absolute bottom-0 w-full h-15 bg-primary rounded-t-full p-10 z-30"></div>
-          <img src={profileimg} alt="" className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-30 h-30 z-40 rounded-full object-cover" />
+          <div className="absolute bottom-0 w-full h-15 bg-primary rounded-t-full p-10 z-30 border-amber-700"></div>
+          <img src={profileimg} alt="" className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-30 h-30 z-40 rounded-full object-cover shadow-neutral-400" />
         </div>
-          <div className="text-center space-y-4 pt-1">
-            <h1 className="text-2xl">Martins Owuama</h1>
-          <p className="text-[0.9rem]">Front end developer</p>
-          <span className="flex gap-3.5 [&>a]:button text-center  justify-center [&>a>i]:text-[20px] border-b border-neutral-700 pb-1.5">
-            <a href=""><i class="fa-brands fa-facebook"></i></a>
-            <a href=""><i class="fa-brands fa-instagram"></i></a>
-            <a href=""><i class="fa-brands fa-x-twitter"></i></a>
-            <a href=""><i class="fa-brands fa-linkedin-in"></i></a>
+          <div className="text-center space-y-3 pt-1">
+            <h1 className="smallHeader">Martins Owuama</h1>
+          <p className="textbody textbody">Front end developer</p>
+          <span className="flex gap-4.5 [&>a]:button text-center  justify-center [&>a>i]:text-3xl border-neutral-700 pb-1.5">
+            <a href="https://web.facebook.com/chuks.owuama.2025" target="blanck"><i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.instagram.com/owumar8/" target="blanck"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://x.com/ChuksOwuama" target="blanck"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/owuama-chuks-588b90344/" target="blanck"><i class="fa-brands fa-linkedin-in"></i></a>
           </span>
-          <div className="flex [&>button]:w-1/2 divide-x divide-neutral-700 [&>button]:h-15 items-center pt-1">
-          <button><a href={CV} download className="button flex items-center justify-center gap-2 text-[0.8rem] w-full h-full"><i class="fa-solid fa-download"> Download CV</i></a></button>
-          <Link to={"/login"}><button className="button"><i class="fa-solid fa-location-dot"></i> Contact me</button></Link>
+          <div className="flex divide-x divide-neutral-700 items-center pt-1">
+          <a href={CV} download className="button w-1/2 h-15 flex items-center justify-center gap-2 textbody font-serif"><i class="fa-solid fa-download"></i> Download CV</a>
+          <button className="button w-1/2 h-15 flex items-center justify-center gap-2 textbody font-serif"><i class="fa-solid fa-location-dot "></i> Contact me</button>
+          {/* <Link to={"/login"}><button className="button"><i class="fa-solid fa-location-dot"></i> Contact me</button></Link> */}
         </div>
           </div>
       </div>

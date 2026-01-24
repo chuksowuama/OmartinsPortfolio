@@ -8,6 +8,7 @@ import Resume from "./WebPages/Resume";
 import Contact from "./WebPages/Contact";
 import { useMediaQuery } from "react-responsive";
 import Workd from "./WebPages/Workd";
+import Sidebar from "./COMPONENNTS/Sidebar";
 
 const Portfolio = () => {
   const[webpage, setwebpage]=useState("About")
@@ -15,6 +16,7 @@ const Portfolio = () => {
   const mobile = useMediaQuery({ query: "(min-width:275px)" });
    const tablet = useMediaQuery({ query: "(min-width:635px)" });
    const laptop = useMediaQuery({ query: "(min-width:1200px)" });
+   const[navControl,setNavControl]=useState(false)
 
   function handlecategoryClick(title){
     if(laptop){
@@ -29,23 +31,23 @@ const Portfolio = () => {
 
   return (
     <>
-      <div className={`relative h-screen w-full lg:overflow-hidden`}>
+      <div className={`relative min-h-screen w-full lg:overflow-hidden`}>
         <video
           src={videobg}
           autoPlay
           muted
           loop
           playsInline
-          className="absolute w-full h-full object-cover top-0 left-0 filter brightness-30"
+          className="absolute inset-0 w-full h-full object-cover filter brightness-30"
           type="video/mp4"
         ></video>
         
         <div className="absolute inset-0 bg-black/60"></div>
 
-        <div className="relative lg:flex justify-center items-center z-40 w-full h-screen md:px-10">
+        <div className="relative lg:flex justify-center items-center z-40 w-full min-h-screen md:px-10 sm:pl:2 lg:pl-6">
           <section className="relative flex sm:flex-col md:flex-row gap-2 md:p-10 lg:p-0">
             <nav className="sm:bg-primary md:bg-transparent flex flex-col justify-center md:gap-3 item-center sm:z-50 sm:fixed sm:top-0 sm:left-0 sm:w-full lg:static md:w-18 md:top-10 md:left-1 lg:top-0 lg:left-0">
-              <Navigation/>
+              <Navigation openNav={()=>setNavControl(true)}/>
               <Category onpage={handlecategoryClick} />
             </nav>
             {
@@ -73,6 +75,9 @@ const Portfolio = () => {
           </section>
         </div>
       </div>
+      {
+        navControl && <Sidebar closeNav={()=>setNavControl(false)}/>
+      }
     </>
   );
 };

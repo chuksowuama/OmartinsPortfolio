@@ -7,9 +7,9 @@
   --color-primary:#171717;
   --color-secondary:#DEDEDE;
   --color-tertiary:#F6B846;
-  --color-textColor::#9CA3AF;
-  --text-smalltext: 12px;
-  --text-Texttitle1: 15px;
+  --color-textColor:#9CA3AF;
+  --text-smalltext: 17px;
+  --text-Texttitle1: 1px;
   --text-Texttitle2: 12px;
 }
 
@@ -55,16 +55,44 @@
     lg:before:block
   }
   .page{
-    @apply bg-primary text-secondary px-6 py-20
+    @apply bg-primary text-secondary px-6 sm:py-5 lg:py-10
   }
   .writeUp{
     @apply text-sm text-textColor ;
   }
   .smallHeader{
-    @apply text-lg font-semibold mb-3
+    @apply text-[clamp(24px,4vw,36px)] leading-[1.3] font-semibold mb-3
   }
   .pageHeader{
-    @apply text-2xl font-semibold mb-6 border-b border-neutral-700 pb-3
+    @apply text-[clamp(28px,5vw,48px)] leading-[1.2] font-bold mb-10
+  }.textbody {
+    @apply text-[clamp(18px,1.2vw,20px)] leading-[1.6] 
+  }
+
+  /* H1 header */
+  .text-h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    line-height: 1.2;
+    font-weight: 700; /* bold */
+  }
+
+  /* H2 header */
+  .text-h2 {
+    font-size: clamp(24px, 4vw, 36px);
+    line-height: 1.3;
+    font-weight: 600; /* semi-bold */
+  }
+  
+  @keyframes slidein{
+    from{
+      left:-100%;
+    }
+    to{
+      left:0;
+    }
+  }
+  .slideinNav{
+    animation: slidein 1s ease-in-out forwards ;
   }
 }
 

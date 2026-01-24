@@ -25,29 +25,29 @@ const Resume = () => {
     <>
       <div className="page">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl font-semibold mb-10 border-b border-neutral-700 pb-3">
+          <h1 className="pageHeader font-semibold mb-10 border-b border-neutral-700 pb-3">
             Resume
           </h1>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <section>
               <div className="flex items-center gap-3 mb-8">
-                <div className="w-10 h-10 rounded-full border border-yellow-400 flex items-center justify-center text-yellow-400">
+                <div className="w-10 h-10 rounded-full border border-tertiary flex items-center justify-center text-tertiary">
                   <span className="text-sm">💼</span>
                 </div>
-                <h2 className="text-lg font-semibold">Experience</h2>
+                <h2 className="smallHeader font-semibold">Experience</h2>
               </div>
 
-              <div className="space-y-10 relative border-l border-neutral-700 pl-6">
+              <div className="space-y-10 relative border-l border-neutral-700 sm:pl:2 lg:pl-6">
                 {Resumeinfo.map((item) => (
                   <div>
-                    <span className="text-xs text-yellow-400 border border-yellow-400 px-2 py-0.5 rounded">
+                    <span className="text-body text-tertiary border border-tertiary-400 px-2 py-0.5 rounded">
                       {item.Years}
                     </span>
-                    <h3 className="mt-2 font-medium">{item.jobTitle}</h3>
-                    <p className="text-sm text-gray-400">
+                    <h3 className="mt-2 font-medium textbody">{item.jobTitle}</h3>
+                    <p className="textbody text-gray-300">
                       {item.Company} — {item.Location}
                     </p>
-                    <p className="text-sm text-gray-500 mt-2 whitespace-pre-line">
+                    <p className="textbody text-gray-400 mt-2 whitespace-pre-line">
                       {item.responsibilities}
                     </p>
                   </div>

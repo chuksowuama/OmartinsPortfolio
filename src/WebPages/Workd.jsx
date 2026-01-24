@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { doc,setDoc,collection, getDocs } from "firebase/firestore";
+import {collection, getDocs } from "firebase/firestore";
 import { db} from "../Firebase";
 const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
 const Workd = () => {
     const [WorkData, setWorkData] = useState([]);
   
-
-  console.log(WorkData)
-
     useEffect(() => {
       async function fetchworkfromFirebase() {
   
@@ -32,7 +28,7 @@ const Workd = () => {
       <section className="min-h-screen page">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-white/10 pb-4 mb-10">
-          <h2 className="text-3xl font-semibold">Works</h2>
+          <h2 className="pageHeader font-semibold">Works</h2>
         </div>
 
         {/* Grid */}

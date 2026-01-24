@@ -37,10 +37,10 @@ const Contact = () => {
         <div className="max-w-4xl mx-auto">
           <h1 className="pageHeader">Get in touch</h1>
 
-          <div className="grid grid-cols-1 gap-5 border-l border-neutral-700 pl-6">
+          <div className="grid grid-cols-1 gap-5 border-l border-neutral-700 sm:pl:2 lg:pl-6">
             {/* Contact Intro */}
             <div>
-              <p className="writeUp leading-relaxed mb-6">
+              <p className="writeUp leading-relaxed mb-6 textbody">
                 I am open to professional opportunities, collaborations, and
                 general enquiries. Feel free to reach out using the details
                 provided, and I will respond as soon as possible.
@@ -63,16 +63,16 @@ const Contact = () => {
             {/* Contact Details */}
             <div className="space-y-5 writeUp flex flex-wrap gap-x-10">
               <p>
-                <span className="writeUp">EMAIL</span> . . . .{email}
+                <span className="writeUp text-body text-tertiary">EMAIL</span> . . . .{email}
               </p>
               <p>
-                <span className="writeUp">PHONE</span> . . . .{phone}
+                <span className="writeUp text-body text-tertiary">PHONE</span> . . . .{phone}
               </p>
               <p>
-                <span className="writeUp">LOCATION</span> . . . . {location}
+                <span className="writeUp text-body text-tertiary">LOCATION</span> . . . . {location}
               </p>
               <p>
-                <span className="writeUp">LANGUAGES</span> . . . . {languages}
+                <span className="writeUp text-body text-tertiary">LANGUAGES</span> . . . . {languages}
               </p>
             </div>
 

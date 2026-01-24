@@ -32,14 +32,14 @@ const[aboutData,setAboutData]=useState(null);
       <div className="page">
         <h1 className="pageHeader">About Me</h1>
 
-        <div className="grid grid-cols-1 gap-10 border-l border-neutral-700 pl-6">
+        <div className="grid grid-cols-1 gap-10 border-l border-neutral-700 sm:pl:2 lg:pl-6">
           {/* Left Content */}
           <div>
-            <p className="text-lg mb-4">
+            <p className="pageHeader mb-4">
               Hello! I’m{" "}
-              <span className="text-yellow-400 font-medium">{fullName}</span>.
+              <span className="text-yellow-400 font-medium textbody">{fullName}</span>.
             </p>
-            <p className="writeUp leading-relaxed">{professionalSumary}</p>
+            <p className="writeUp leading-relaxed textbody">{professionalSumary}</p>
           </div>
 
           <section>
@@ -47,15 +47,15 @@ const[aboutData,setAboutData]=useState(null);
               <div className="w-10 h-10 rounded-full border border-yellow-400 flex items-center justify-center text-yellow-400">
                 <span className="text-sm">🎓</span>
               </div>
-              <h2 className="text-lg font-semibold">Education</h2>
+              <h2 className="smallHeader font-semibold">Education</h2>
             </div>
 
-            <div className="space-y-10 relative border-l border-neutral-700 pl-6">
+            <div className="space-y-10 relative border-l border-neutral-700 sm:pl:2 lg:pl-6">
               {
                 Education.map((item)=>(
                  <div>
-                <span className="text-xs text-gray-400">{item.yearsAttended}</span>
-                <h3 className="mt-2 font-medium">
+                <span className="textbody text-gray-400">{item.yearsAttended}</span>
+                <h3 className="mt-2 font-medium textbody">
                  {item.degreeInstitution}
                 </h3>
               </div>
@@ -77,10 +77,10 @@ const[aboutData,setAboutData]=useState(null);
                       ></i>
                     </div>
                     <div>
-                      <h4 className="font-semibold sm:text-center md:text-start">
+                      <h4 className="font-semibold sm:text-center md:text-start textbody">
                         {skills.skillName}
                       </h4>
-                      <p className="text-sm text-secondary sm:text-center md:text-start">
+                      <p className="textbody text-secondary sm:text-center md:text-start textbody">
                         {skills.skillDescription}
                       </p>
                     </div>
@@ -93,21 +93,21 @@ const[aboutData,setAboutData]=useState(null);
             <h2 className="smallHeader">Leadership Experience</h2>
             <div className="border-b border-neutral-400">
                {leadership.map((item) => (
-              <p className="writeUp">
-                <span>{item.roleOrganization}</span>
-                <span>{item.leadershipYears}</span> <br />
-                <p className="mt-2 whitespace-pre-line">{item.leadershipResponsibilities}</p>
+              <p className="writeUp textbody mt-4">
+                <span className="textbody">{item.roleOrganization}</span>
+                <span className="textbody">{item.leadershipYears}</span> <br />
+                <p className="mt-2 whitespace-pre-line textbody">{item.leadershipResponsibilities}</p>
               </p>
             ))}
             </div>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold mb-3">Certification</h2>
+            <h2 className="smallHeader font-semibold mb-3">Certification</h2>
             <div className="writeUp border-b border-neutral-400">
               {
                 certificate.map((item)=>(
-                  <p className="writeUp mt-1"><span>{item.certificationName}</span> <span>{item.certificationYear}</span></p>
+                  <p className="writeUp mt-1 textbody"><span>{item.certificationName}</span> <span>{item.certificationYear}</span></p>
                 ))
               }
             </div>
