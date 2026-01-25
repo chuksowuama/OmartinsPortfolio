@@ -20,10 +20,10 @@ import { Link } from "react-router-dom";
 const heroimg=[heroimg1,heroimg2,heroimg3,heroimg4,heroimg5,heroimg6]
 
 
-const Herosection = () => {
+const Herosection = ({ heroTheme }) => {
   return (
     <>
-      <div className=" h-full bg-primary text-secondary lg:shadow-md lg:shadow-zinc-100">
+      <div className={` h-full ${heroTheme==="light"?"bg-secondary text-primary lg:shadow-md lg:shadow-zinc-700":"bg-primary text-secondary lg:shadow-md lg:shadow-zinc-100"}`}>
         <div className="relative h-90 ">
         <Swiper
         spaceBetween={30}
@@ -45,7 +45,7 @@ const Herosection = () => {
         }
       </Swiper>
           {/* <img src={heroimg} alt="" className="w-full h-full object-cover" /> */}
-          <div className="absolute bottom-0 w-full h-15 bg-primary rounded-t-full p-10 z-30 border-amber-700"></div>
+          <div className={`absolute bottom-0 w-full h-15 ${heroTheme==="light"?"bg-secondary":"bg-primary"} rounded-t-full p-10 z-30 dark:bg-primary dark:text-secondary`}></div>
           <img src={profileimg} alt="" className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-30 h-30 z-40 rounded-full object-cover shadow-neutral-400" />
         </div>
           <div className="text-center space-y-3 pt-1">

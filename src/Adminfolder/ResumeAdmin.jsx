@@ -1,16 +1,25 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeReduxResume, setReduxBulkResume, settReduxResume } from "../Redux Folder";
-import { db,auth } from "../Firebase";
-import { addDoc, collection, deleteDoc, getDocs,doc } from "firebase/firestore";
+import {
+  removeReduxResume,
+  setReduxBulkResume,
+  settReduxResume,
+} from "../Redux Folder";
+import { db, auth } from "../Firebase";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  getDocs,
+  doc,
+} from "firebase/firestore";
 const PORTFOLIOID = "tK6b1sApDYThYpar7EwbIE3EtoB3";
-
 
 const ResumeAdmin = () => {
   const dispatchResume = useDispatch();
-  const [loading, setLoading]=useState(false);
-  const Resumeinfo = useSelector((state) => state.stored.resumeStored||[]);
+  const [loading, setLoading] = useState(false);
+  const Resumeinfo = useSelector((state) => state.stored.resumeStored || []);
   const [resumeForm, setResumeForm] = useState({
     jobTitle: "",
     Company: "",
@@ -19,48 +28,45 @@ const ResumeAdmin = () => {
     responsibilities: "",
   });
 
-  useEffect(()=>{
-    async function fetchResumeFromFirebase(){
-    try {
-      const resumeRef= collection(db,"users",PORTFOLIOID,"resumes");
-      const fetchedData= await getDocs(resumeRef);
-      const allResumes= fetchedData.docs.map((doc)=>({
-        id:doc.id,
-        ...doc.data()
-      }))
+  useEffect(() => {
+    async function fetchResumeFromFirebase() {
+      try {
+        const resumeRef = collection(db, "users", PORTFOLIOID, "resumes");
+        const fetchedData = await getDocs(resumeRef);
+        const allResumes = fetchedData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
 
-      dispatchResume(setReduxBulkResume(allResumes));
-    } catch (error) {
-      console.log(error)
-    }
+        dispatchResume(setReduxBulkResume(allResumes));
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     fetchResumeFromFirebase();
-  },[dispatchResume])
-
+  }, [dispatchResume]);
 
   function handleResume(e) {
     const { name, value } = e.target;
     setResumeForm((prev) => ({ ...prev, [name]: value }));
   }
-  
+
   async function SubmitResume() {
-    if(!resumeForm.jobTitle || !resumeForm.Company) return;
+    if (!resumeForm.jobTitle || !resumeForm.Company) return;
 
-    const user= auth.currentUser;
-    if(!user) return;
-    setLoading(true)
+    const user = auth.currentUser;
+    if (!user) return;
+    setLoading(true);
     try {
-      const resumeRef= collection(db,"users",user.uid,"resumes");
-      const docRef= await addDoc (resumeRef,resumeForm)
-      dispatchResume(settReduxResume({ ...resumeForm, id: docRef.id}));
-      
+      const resumeRef = collection(db, "users", user.uid, "resumes");
+      const docRef = await addDoc(resumeRef, resumeForm);
+      dispatchResume(settReduxResume({ ...resumeForm, id: docRef.id }));
     } catch (error) {
-      console.log(error)
-    }finally{
-     setLoading(false)
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-
 
     setResumeForm({
       jobTitle: "",
@@ -71,16 +77,15 @@ const ResumeAdmin = () => {
     });
   }
 
-
-   async function handleDelete(id) {
+  async function handleDelete(id) {
     const confirmDelete = window.confirm("SURE YOU WANT TO DELETE?");
     if (!confirmDelete) return;
 
     const user = auth.currentUser;
-    if(!user) return;
-     const resumeRef= doc(db,"users",user.uid,"resumes",id);
-     await deleteDoc(resumeRef);
-     dispatchResume(removeReduxResume(id))
+    if (!user) return;
+    const resumeRef = doc(db, "users", user.uid, "resumes", id);
+    await deleteDoc(resumeRef);
+    dispatchResume(removeReduxResume(id));
   }
 
   return (
@@ -138,18 +143,20 @@ const ResumeAdmin = () => {
       <section className="bg-white rounded-2xl shadow p-6 mt-6">
         <h2 className="text-xl font-semibold mb-4">Resume</h2>
         <div>
-          {Resumeinfo.map((item) => (
-            <div className="button text-primary border-b border-nuetral-700">
-              <h2 className="flex justify-between mb-2">
-                {item.jobTitle}{" "}
-                <button onClick={() => handleDelete(item.id)} disabled={loading}>cancel</button>
-              </h2>
-            </div>
-          ))}
+          {Resumeinfo.map((item) => {
+            return (
+              <div key={item.id}>
+                <h2>
+                  {item.jobTitle}
+                  <button onClick={() => handleDelete(item.id)}>cancel</button>
+                </h2>
+              </div>
+            );
+          })}
         </div>
       </section>
     </>
   );
-}
+};
 
-export default ResumeAdmin
+export default ResumeAdmin;

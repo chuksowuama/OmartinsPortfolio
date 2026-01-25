@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {collection, getDocs } from "firebase/firestore";
 import { db} from "../Firebase";
 const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
-const Workd = () => {
+const Workd = ({ workTheme }) => {
     const [WorkData, setWorkData] = useState([]);
   
     useEffect(() => {
@@ -25,7 +25,7 @@ const Workd = () => {
 
   return (
     <>
-      <section className="min-h-screen page">
+      <section className={`page min-h-screen ${workTheme==="light"?"bg-secondary text-primary":"bg-primary text-secondary"} `}>
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-white/10 pb-4 mb-10">
           <h2 className="pageHeader font-semibold">Works</h2>
@@ -38,7 +38,7 @@ const Workd = () => {
         {
           WorkData.map((item)=>(
           <a href={item.projectURL} className="block" target="_blank" rel="rel noreferrer" >
-          <div className="bg-[#262626] p-4">
+          <div className="p-4 border-2">
           <img
             src={item.projectimg}
             alt={item.projectTitle}
@@ -46,7 +46,7 @@ const Workd = () => {
           />
           <div className="mt-4">
             <h3 className="text-lg font-medium">{item.projectTitle}</h3>
-            <p className="text-sm text-white/60">{item.projectType}</p>
+            <p className="textbody ">{item.projectType}</p>
           </div>
         </div>
         </a>

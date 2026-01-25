@@ -9,10 +9,12 @@ import Contact from "./WebPages/Contact";
 import { useMediaQuery } from "react-responsive";
 import Workd from "./WebPages/Workd";
 import Sidebar from "./COMPONENNTS/Sidebar";
+import Product from "./WebPages/Product";
+import Blog from "./WebPages/Blog";
 
 const Portfolio = () => {
   const[webpage, setwebpage]=useState("About")
-  const [theme, SetTheme] = useState(true);
+  const [theme, SetTheme] = useState("light");
   const mobile = useMediaQuery({ query: "(min-width:275px)" });
    const tablet = useMediaQuery({ query: "(min-width:635px)" });
    const laptop = useMediaQuery({ query: "(min-width:1200px)" });
@@ -28,6 +30,22 @@ const Portfolio = () => {
       }
     }
   }
+
+  function openNav(){{
+    setNavControl(true)
+  }}
+
+  function closeNav(){
+    setNavControl(false)
+  }
+
+  function ChangeTheme(){
+    const newTheme= theme==="light"?"dark":"light"
+    SetTheme(newTheme)
+    document.documentElement.classList.toggle("dark",newTheme==="dark")
+  }
+
+  console.log("current nav",navControl)
 
   return (
     <>
@@ -47,28 +65,32 @@ const Portfolio = () => {
         <div className="relative lg:flex justify-center items-center z-40 w-full min-h-screen md:px-10 sm:pl:2 lg:pl-6">
           <section className="relative flex sm:flex-col md:flex-row gap-2 md:p-10 lg:p-0">
             <nav className="sm:bg-primary md:bg-transparent flex flex-col justify-center md:gap-3 item-center sm:z-50 sm:fixed sm:top-0 sm:left-0 sm:w-full lg:static md:w-18 md:top-10 md:left-1 lg:top-0 lg:left-0">
-              <Navigation openNav={()=>setNavControl(true)}/>
-              <Category onpage={handlecategoryClick} />
+              <Navigation openTheNav={openNav} navTheme={theme} ChangeTheme={ChangeTheme}/>
+              <Category onpage={handlecategoryClick} cateTheme={theme}/>
             </nav>
             {
                laptop?<main className="lg:grid lg:grid-cols-5 not-last-of-type:lg:ml-0">
               <div className="lg:col-span-2 lg:transform scale-y-103 ">
-                <Herosection/>
+                <Herosection heroTheme={theme}/>
               </div>
               <div className="lg:col-span-3 bg-primary overflow-y-scroll h-[85vh] custom-scrollbar">
-               {webpage==="About" && <About/>}
-                {webpage==="Resume" && <Resume/>}
-                 {webpage==="Contact" && <Contact/>} 
-                 {webpage==="Works" && <Workd/>} 
+               {webpage==="About" && <About aboutTheme={theme}/>}
+                {webpage==="Resume" && <Resume resumeTheme={theme}/>}
+                 {webpage==="Contact" && <Contact contactTheme={theme} />} 
+                 {webpage==="Works" && <Workd workTheme={theme} />} 
+                 {webpage==="Blog" && <Blog/>} 
+                 {webpage==="Product" && <Product/>} 
               </div>
             </main>:
               <main className="sm:mt-33 md:mt-0 sm:w-full md:ml-5 ">
               <div className="">
                  <section id="Home"><Herosection/></section>
-                 <section id="About"><About/></section>
-                 <section id="Resume"><Resume/></section>
-                 <section id="Works"><Workd/></section>
-                 <section id="Contact"><Contact/></section>
+                 <section id="About"><About aboutTheme={theme} /></section>
+                 <section id="Resume"><Resume resumeTheme={theme}/></section>
+                 <section id="Works"><Workd workTheme={theme}/></section>
+                 <section id="Contact"> <Contact contactTheme={theme} /> </section>
+                 {/* <section id="Product"> <Product /> </section>
+                 <section id="Blog"> <Blog /> </section> */}
               </div>
             </main>
             }
@@ -76,7 +98,7 @@ const Portfolio = () => {
         </div>
       </div>
       {
-        navControl && <Sidebar closeNav={()=>setNavControl(false)}/>
+        navControl && <Sidebar closeTheNav={closeNav} slideNavTheme={theme}/>
       }
     </>
   );

@@ -3,7 +3,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../Firebase";
 const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
 
-const About = () => {
+const About = ({ aboutTheme }) => {
 const[aboutData,setAboutData]=useState(null);
 
   useEffect(()=>{
@@ -29,7 +29,7 @@ const[aboutData,setAboutData]=useState(null);
 
   return (
     <>
-      <div className="page">
+      <div className={`page ${aboutTheme==="light"?"bg-secondary text-primary ":"bg-primary text-secondary "} `}>
         <h1 className="pageHeader">About Me</h1>
 
         <div className="grid grid-cols-1 gap-10 border-l border-neutral-700 sm:pl:2 lg:pl-6">
@@ -54,7 +54,7 @@ const[aboutData,setAboutData]=useState(null);
               {
                 Education.map((item)=>(
                  <div>
-                <span className="textbody text-gray-400">{item.yearsAttended}</span>
+                <span className="textbody">{item.yearsAttended}</span>
                 <h3 className="mt-2 font-medium textbody">
                  {item.degreeInstitution}
                 </h3>
@@ -70,7 +70,7 @@ const[aboutData,setAboutData]=useState(null);
             <div className="grid grid-cols-2 gap-4 writeUp">
               {technicalSkills.length &&
                 technicalSkills.map((skills) => (
-                  <div className="flex sm:flex-col md:flex-row items-center gap-4  p-4 rounded-md border border-secondary w-full ">
+                  <div className={`flex sm:flex-col md:flex-row items-center gap-4 p-4 rounded-md w-full border${aboutTheme==="light" ? "border-neutral-700" : "border-neutral-300"}`}>
                     <div className="w-12 h-12 flex items-center justify-center rounded-full border border-yellow-400 text-yellow-400">
                       <i
                         className={`fa-brands ${skills.skillIconClass} text-xl`}
@@ -80,7 +80,7 @@ const[aboutData,setAboutData]=useState(null);
                       <h4 className="font-semibold sm:text-center md:text-start textbody">
                         {skills.skillName}
                       </h4>
-                      <p className="textbody text-secondary sm:text-center md:text-start textbody">
+                      <p className="textbody sm:text-center md:text-start">
                         {skills.skillDescription}
                       </p>
                     </div>

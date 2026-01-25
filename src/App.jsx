@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import Portfolio from "./Portfolio"
-import { Links, Route, Routes, useLocation } from "react-router-dom"
+import { Links, Route, Routes} from "react-router-dom"
 import Login from "./Login"
 import Admin from "./Adminfolder/Admin"
 import ProtectedRoute from "./ProtectedRoute"
@@ -9,14 +9,12 @@ import { ListenerAuth } from "./Authlistener"
 
 function App() {
 const dispatch=useDispatch()
-const location=useLocation()
 
 useEffect(()=>{
-  if(location.pathname.startsWith("/admin")){
     const unsubscribe = ListenerAuth(dispatch);
     return () => unsubscribe();
-  }
-},[dispatch,location.pathname])
+},[dispatch])
+
   return (
     <>
     <Routes>

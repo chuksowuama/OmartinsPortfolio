@@ -3,7 +3,11 @@ import { useSelector } from "react-redux";
 const PORTFOLIOID = "tK6b1sApDYThYpar7EwbIE3EtoB3";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db, auth } from "../Firebase";
-const Contact = () => {
+
+
+
+
+const Contact = ({ contactTheme }) => {
   const [contactinfo, setContactInfo] = useState({
     email: "",
     phone: "",
@@ -33,7 +37,7 @@ const Contact = () => {
 
   return (
     <>
-      <div className="page shadow-inner shadow-black">
+      <div className={`page ${contactTheme==="light"?"bg-secondary text-primary":"bg-primary text-secondary"} shadow-inner shadow-black`}>
         <div className="max-w-4xl mx-auto">
           <h1 className="pageHeader">Get in touch</h1>
 
@@ -63,16 +67,16 @@ const Contact = () => {
             {/* Contact Details */}
             <div className="space-y-5 writeUp flex flex-wrap gap-x-10">
               <p>
-                <span className="writeUp text-body text-tertiary">EMAIL</span> . . . .{email}
+                <span className="writeUp textbody text-tertiary">EMAIL</span> . . . .{email}
               </p>
               <p>
-                <span className="writeUp text-body text-tertiary">PHONE</span> . . . .{phone}
+                <span className="writeUp textbody text-tertiary">PHONE</span> . . . .{phone}
               </p>
               <p>
-                <span className="writeUp text-body text-tertiary">LOCATION</span> . . . . {location}
+                <span className="writeUp textbody text-tertiary">LOCATION</span> . . . . {location}
               </p>
               <p>
-                <span className="writeUp text-body text-tertiary">LANGUAGES</span> . . . . {languages}
+                <span className="writeUp textbody text-tertiary">LANGUAGES</span> . . . . {languages}
               </p>
             </div>
 

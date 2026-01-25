@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  removeCert,
-  removeEdu,
-  removeLeader,
-  removeSkills,
-  setReduxBulkAbout,
-  setReduxCertificate,
-  setReduxEducation,
-  setReduxLeadership,
-  setReduxTechnicalSkills,
-  settReduxAbout,
-} from "../Redux Folder";
 import { auth, db } from "../Firebase";
-import { addDoc, collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 const PORTFOLIOID="tK6b1sApDYThYpar7EwbIE3EtoB3";
 
 const AboutAdmin = () => {
-  const dispatchAbout = useDispatch();
-  const selectedabout = useSelector((state) => state.stored.aboutStored ?? {});
-const selectedSkills = useSelector((state) => state.stored.technicalSkillsStored ?? []);
-const selectedEdu = useSelector((state) => state.stored.educationStored ?? []);
-const selectedcert = useSelector((state) => state.stored.certificateStored ?? []);
-const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? []);
+
+//     const dispatchAbout = useDispatch();
+//   const selectedabout = useSelector((state) => state.stored.aboutStored ?? [{}]);
+// const selectedSkills = useSelector((state) => state.stored.technicalSkillsStored ?? []);
+// const selectedEdu = useSelector((state) => state.stored.educationStored ?? []);
+// const selectedcert = useSelector((state) => state.stored.certificateStored ?? []);
+// const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? []);
+
+const [savedAbout, setSavedAbout] = useState({ professionalSumary: "", fullName: "" });
+const [savedSkills, setSavedSkills] = useState([]);
+const [savedEdu, setSavedEdu] = useState([]);
+const [savedCert, setSavedCert] = useState([]);
+const [savedLeader, setSavedLeader] = useState([]);
 
   const [AboutForm, setAboutForm] = useState({
     professionalSumary: "",
@@ -79,20 +73,32 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
   }
   /* ================= FETCH DATA ================= */
 
-  useEffect(()=>{
-    async function fetchAboutFromFirebase(){
-      try{
-        const aboutRef=doc(db,"users",PORTFOLIOID,"About","AboutDetails")
-        const aboutAdminData= await getDoc(aboutRef);
-        if(aboutAdminData.exists()){
-          dispatchAbout(setReduxBulkAbout(aboutAdminData.data()))
-        }
-      }catch(error){
-        console.log(error)
-      }
+ useEffect(() => {
+  const fetchAllData = async () => {
+    try {
+      const aboutRef = doc(db, "users", PORTFOLIOID, "About", "AboutDetails");
+      const aboutSnap = await getDoc(aboutRef);
+      if (aboutSnap.exists()) 
+      setSavedAbout(aboutSnap.data());
+      setAboutForm(aboutSnap.data());
+
+      const skillsSnap = await getDocs(collection(db, "users", PORTFOLIOID, "technicalskills"));
+      setSavedSkills(skillsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      const eduSnap = await getDocs(collection(db, "users", PORTFOLIOID, "educations"));
+      setSavedEdu(eduSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      const certSnap = await getDocs(collection(db, "users", PORTFOLIOID, "certificates"));
+      setSavedCert(certSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+
+      const leaderSnap = await getDocs(collection(db, "users", PORTFOLIOID, "leaderships"));
+      setSavedLeader(leaderSnap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    } catch (err) {
+      console.log(err);
     }
-    fetchAboutFromFirebase();
-  },[dispatchAbout])
+  };
+  fetchAllData();
+}, []);
 
   //===========================Technical skill Function====================//
 
@@ -102,10 +108,9 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
     const user=auth.currentUser
     if(!user) return;
     try {
-      const skillRef= collection(db,"users",user.uid,"technicalskills")
+      const skillRef= collection(db,"users",PORTFOLIOID,"technicalskills")
       const skillData=await addDoc(skillRef,skills)
-      dispatchAbout(setReduxTechnicalSkills({...skills, id:skillData.id}));
-
+      setSavedSkills((prev)=>[...prev,{...skills, id:skillData.id}])
       setSkills({
       skillName: "",
       skillIconClass: "",
@@ -125,10 +130,9 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
      const user=auth.currentUser
     if(!user) return;
       try {
-        const eduRef= collection(db,"users",user.uid,"educations")
+        const eduRef= collection(db,"users",PORTFOLIOID,"educations")
         const eduData= await addDoc(eduRef,education)
-        dispatchAbout(setReduxEducation({...education, id:eduData.id}))
-
+        setSavedEdu((prev)=>[...prev,{...education,id:eduData.id}])
       setEducation({
       degreeInstitution: "",
       yearsAttended: "",
@@ -147,9 +151,9 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
     const user=auth.currentUser
     if(!user) return;
     try{
-     const leadRef= collection(db,"users",user.uid,"leaderships")
+     const leadRef= collection(db,"users",PORTFOLIOID,"leaderships")
      const leadData= await addDoc(leadRef,leadership)
-     dispatchAbout(setReduxLeadership({...leadership, id:leadData.id}));
+     setSavedLeader((prev)=>[...prev,{...leadership,id:leadData.id}])
       setLeadership({
       roleOrganization: "",
       leadershipYears: "",
@@ -170,9 +174,9 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
 
     const user=auth.currentUser
     try {
-    const certRef= collection(db,"users",user.uid,"certificates")
+    const certRef= collection(db,"users",PORTFOLIOID,"certificates")
     const docRef= await addDoc(certRef,certificate)
-    dispatchAbout(setReduxCertificate({...certificate,id:docRef.id}));
+    setSavedCert((prev)=>[...prev,{...certificate,id:docRef.id}])
         setcertificate({
       certificationName: "",
       certificationYear: "",
@@ -187,17 +191,16 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
   async function submitAbout() {
     const AboutFullForm = {
       ...AboutForm,
-      technicalSkills: selectedSkills,
-      Education: selectedEdu,
-      certificate: selectedcert,
-      leadership: selectedLeader,
+      technicalSkills: savedSkills,
+      Education: savedEdu,
+      certificate: savedCert,
+      leadership: savedLeader,
     };
 
     const user= auth.currentUser
     if(!user) return;
       const aboutRef=doc(db,"users",user.uid,"About","AboutDetails")
-      await setDoc(aboutRef,AboutFullForm)
-     dispatchAbout(settReduxAbout({ ...AboutFullForm }));    
+      await setDoc(aboutRef,AboutFullForm)  
 
     setSkills({
       skillName: "",
@@ -217,20 +220,19 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
       leadershipYears: "",
 
     });
-
-
+  alert("About section updated sucessfully")
   }
 
 
   /* ================= AUTO FILL THE FORM ================= */
   useEffect(() => {
-    if (selectedabout && Object.keys(selectedabout).length > 0) {
+    if (savedAbout && Object.keys(savedAbout).length > 0) {
       setAboutForm({
-        professionalSumary: selectedabout.professionalSumary ?? "",
-        fullName: selectedabout.fullName ?? "",
+        professionalSumary: savedAbout.professionalSumary ?? "",
+        fullName: savedAbout.fullName ?? "",
       });
     }
-  }, [selectedabout]);
+  }, [savedAbout]);
 
 
     /* ================= DELETE ABOUT ADMIN ================= */
@@ -242,7 +244,7 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
     if(!user) return;
     const skillref=doc(db,"users",user.uid,"technicalskills",id)
     await deleteDoc(skillref)
-      dispatchAbout(removeSkills(id));
+    setSavedSkills((prev)=>prev.filter((item)=>item.id!==id))
   }
 
   async function handleDeleteEdu(id) {
@@ -252,7 +254,7 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
      if(!user)return;
      const eduref=doc(db,"users",user.uid,"educations",id)
      await deleteDoc(eduref)
-      dispatchAbout(removeEdu(id));
+      setSavedEdu((prev)=>prev.filter((item)=>item.id!==id))
   }
 
   async function handleDeleteCertification(id) {
@@ -262,7 +264,7 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
     if(!user) return;
     const certtRef=doc(db,"users",user.uid,"certificates",id)
     await deleteDoc(certtRef)
-      dispatchAbout(removeCert(id));
+    setSavedCert((prev)=>prev.filter((item)=>item.id!==id))
   }
 
   async function handleDeleteLeadership(id) {
@@ -272,7 +274,8 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
     if(!user) return;
     const leadRef=doc(db,"users",user.uid,"leaderships",id)
     await deleteDoc(leadRef)
-      dispatchAbout(removeLeader(id));
+
+    setSavedLeader((prev)=>prev.filter((item)=>item.id!==id))
     }
   //  function handleDelele(id) {
   //   const confirmDelete = window.confirm("Are you sure to delete skill");
@@ -445,8 +448,8 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
         <div className="bg-white rounded-2xl shadow p-6 mt-6">
           <h2 className="text-xl font-semibold mb-4">MY Degree</h2>
           <div>
-            {selectedEdu.length > 0 &&
-              selectedEdu.map((item) => (
+            {savedEdu.length > 0 &&
+              savedEdu.map((item) => (
                 <div className="button text-primary border-b border-neutral-700">
                   <h2 className="flex justify-between mb-2">
                     {item.degreeInstitution}{" "}
@@ -462,8 +465,8 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
         <div className="bg-white rounded-2xl shadow p-6 mt-6">
           <h2 className="text-xl font-semibold mb-4">MY SKILLS</h2>
           <div>
-            {selectedSkills.length > 0 &&
-              selectedSkills.map((item) => (
+            {savedSkills.length > 0 &&
+              savedSkills.map((item) => (
                 <div className="button text-primary border-b border-neutral-700">
                   <h2 className="flex justify-between mb-2">
                     {item.skillName}{" "}
@@ -478,8 +481,8 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
         <div className="bg-white rounded-2xl shadow p-6 mt-6">
           <h2 className="text-xl font-semibold mb-4">MY Certifications</h2>
           <div>
-            {selectedcert.length > 0 &&
-              selectedcert.map((item) => (
+            {savedCert.length > 0 &&
+              savedCert.map((item) => (
                 <div className="button text-primary border-b border-neutral-700">
                   <h2 className="flex justify-between mb-2">
                     {item.certificationName}{" "}
@@ -494,8 +497,8 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
         <div className="bg-white rounded-2xl shadow p-6 mt-6">
           <h2 className="text-xl font-semibold mb-4">Leadership Skills</h2>
           <div>
-            {selectedLeader.length > 0 &&
-              selectedLeader.map((item) => (
+            {savedLeader.length > 0 &&
+              savedLeader.map((item) => (
                 <div className="button text-primary border-b border-neutral-700">
                   <h2 className="flex justify-between mb-2">
                     {item.roleOrganization}{" "}
@@ -513,3 +516,27 @@ const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? [
 };
 
 export default AboutAdmin;
+
+
+
+//   const dispatchAbout = useDispatch();
+//   const selectedabout = useSelector((state) => state.stored.aboutStored ?? [{}]);
+// const selectedSkills = useSelector((state) => state.stored.technicalSkillsStored ?? []);
+// const selectedEdu = useSelector((state) => state.stored.educationStored ?? []);
+// const selectedcert = useSelector((state) => state.stored.certificateStored ?? []);
+// const selectedLeader = useSelector((state) => state.stored.leadershipStored ?? []);
+
+
+// import { useDispatch, useSelector } from "react-redux";
+// import {
+//   removeCert,
+//   removeEdu,
+//   removeLeader,
+//   removeSkills,
+//   setReduxBulkAbout,
+//   setReduxCertificate,
+//   setReduxEducation,
+//   setReduxLeadership,
+//   setReduxTechnicalSkills,
+//   settReduxAbout,
+// } from "../Redux Folder";
