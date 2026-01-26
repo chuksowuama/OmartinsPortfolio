@@ -41,7 +41,7 @@ const Contact = ({ contactTheme }) => {
         <div className="max-w-4xl mx-auto">
           <h1 className="pageHeader">Get in touch</h1>
 
-          <div className="grid grid-cols-1 gap-5 border-l border-neutral-700 sm:pl:2 lg:pl-6">
+          <div className="grid grid-cols-1 gap-5 border-l border-neutral-700 pl-4 pb-4">
             {/* Contact Intro */}
             <div>
               <p className="writeUp leading-relaxed mb-6 textbody">

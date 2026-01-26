@@ -56,7 +56,7 @@
     lg:before:block
   }
   .page{
-    @apply px-6 sm:py-5 lg:py-10
+    @apply px-6 sm:py-5 lg:py-10 
   }
   .writeUp{
     @apply text-sm ;

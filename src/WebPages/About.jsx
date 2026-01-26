@@ -32,14 +32,14 @@ const[aboutData,setAboutData]=useState(null);
       <div className={`page ${aboutTheme==="light"?"bg-secondary text-primary ":"bg-primary text-secondary "} `}>
         <h1 className="pageHeader">About Me</h1>
 
-        <div className="grid grid-cols-1 gap-10 border-l border-neutral-700 sm:pl:2 lg:pl-6">
+        <div className="grid grid-cols-1 gap-10 border-l border-neutral-700 sm:pl:6 lg:pl-6">
           {/* Left Content */}
           <div>
-            <p className="pageHeader mb-4">
+            <p className="pageHeader mb-4 pl-4">
               Hello! I’m{" "}
               <span className="text-yellow-400 font-medium textbody">{fullName}</span>.
             </p>
-            <p className="writeUp leading-relaxed textbody">{professionalSumary}</p>
+            <p className="writeUp leading-relaxed textbody pl-4">{professionalSumary}</p>
           </div>
 
           <section>
@@ -50,7 +50,7 @@ const[aboutData,setAboutData]=useState(null);
               <h2 className="smallHeader font-semibold">Education</h2>
             </div>
 
-            <div className="space-y-10 relative border-l border-neutral-700 sm:pl:2 lg:pl-6">
+            <div className="space-y-10 relative border-l border-neutral-700 pl-4">
               {
                 Education.map((item)=>(
                  <div>
@@ -67,7 +67,7 @@ const[aboutData,setAboutData]=useState(null);
           <section>
             <h2 className="smallHeader mb-6">Technical Skills</h2>
 
-            <div className="grid grid-cols-2 gap-4 writeUp">
+            <div className="grid grid-cols-2 gap-4 writeUp pl-4 pb-4">
               {technicalSkills.length &&
                 technicalSkills.map((skills) => (
                   <div className={`flex sm:flex-col md:flex-row items-center gap-4 p-4 rounded-md w-full border${aboutTheme==="light" ? "border-neutral-700" : "border-neutral-300"}`}>
@@ -91,7 +91,7 @@ const[aboutData,setAboutData]=useState(null);
 
           <section>
             <h2 className="smallHeader">Leadership Experience</h2>
-            <div className="border-b border-neutral-400">
+            <div className="border-b border-neutral-400 pl-4 pb-4">
                {leadership.map((item) => (
               <p className="writeUp textbody mt-4">
                 <span className="textbody">{item.roleOrganization}</span>
@@ -104,7 +104,7 @@ const[aboutData,setAboutData]=useState(null);
 
           <section>
             <h2 className="smallHeader font-semibold mb-3">Certification</h2>
-            <div className="writeUp border-b border-neutral-400">
+            <div className="writeUp border-b border-neutral-400 pl-4 pb-4">
               {
                 certificate.map((item)=>(
                   <p className="writeUp mt-1 textbody"><span>{item.certificationName}</span> <span>{item.certificationYear}</span></p>
