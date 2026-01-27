@@ -70,8 +70,8 @@ const[aboutData,setAboutData]=useState(null);
             <div className="grid grid-cols-2 gap-4 writeUp pl-4 pb-4">
               {technicalSkills.length &&
                 technicalSkills.map((skills) => (
-                  <div className={`flex sm:flex-col md:flex-row items-center gap-4 p-4 rounded-md w-full border${aboutTheme==="light" ? "border-neutral-700" : "border-neutral-300"}`}>
-                    <div className="w-12 h-12 flex items-center justify-center rounded-full border border-yellow-400 text-yellow-400">
+                  <div className={`flex sm:flex-col md:flex-row items-center gap-4 p-4 rounded-md w-full border${aboutTheme==="light" ? " text-primary border-primary" : "text-secondary border-secondary"}`}>
+                    <div className={`w-12 h-12 flex items-center justify-center rounded-full border ${aboutTheme==="light" ?"border-yellow-800 text-yellow-800":"border-yellow-400 text-yellow-400"} `}>
                       <i
                         className={`fa-brands ${skills.skillIconClass} text-xl`}
                       ></i>

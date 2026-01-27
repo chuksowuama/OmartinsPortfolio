@@ -35,6 +35,7 @@ export const Navdata = [
 // ]
 
  export const mypages = [
+    { title: "Profile" },
     { title: "About" },
     { title: "Resume" },
     { title: "Works" },
@@ -85,3 +86,41 @@ export const technicalSkills = [
     description: "Documentation, reporting, and productivity tools."
   }
 ];
+
+export const AccordData = [
+  {
+    id: 1,
+    title: "About",
+    link: "fa-user"
+  },
+]
+
+export const socialMedia = [
+  {
+    id: 1,
+    link:"",
+    icon:"fa-brands fa-github"
+  },
+    {
+    id: 2,
+    link:"https://www.linkedin.com/in/owuama-chuks-588b90344/",
+    icon:"fa-brands fa-linkedin-in"
+  },
+    {
+    id: 3,
+    link:"https://x.com/ChuksOwuama",
+    icon:"fa-brands fa-x-twitter",
+  },
+    {
+    id: 4,
+    link:"https://web.facebook.com/chuks.owuama.2025",
+    icon:"fa-brands fa-facebook"
+  },
+    {
+    id: 5,
+    link:"https://www.instagram.com/owumar8/",
+    icon:"fa-brands fa-instagram"
+  },
+]
+
+

@@ -96,7 +96,16 @@
     animation: slidein 1s ease-in-out forwards ;
   }
 }
-
+@keyframes accord{
+  from{
+    height: 0;
+  }to{
+    height: 100%;
+  }
+}
+.accord{
+   animation: accord 1s ease-in-out forwards ;
+}
 /* scroll effects */
 /* Custom scrollbar */
 .custom-scrollbar::-webkit-scrollbar {

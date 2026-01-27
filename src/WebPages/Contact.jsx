@@ -65,18 +65,18 @@ const Contact = ({ contactTheme }) => {
             </div>
 
             {/* Contact Details */}
-            <div className="space-y-5 writeUp flex flex-wrap gap-x-10">
+            <div className={`space-y-5 writeUp flex flex-wrap gap-x-10 [&>span]:${contactTheme==="light" ?"border-yellow-800 text-yellow-800":"border-yellow-400 text-yellow-400"}`}>
               <p>
-                <span className="writeUp textbody text-tertiary">EMAIL</span> . . . .{email}
+                <span className={`writeUp textbody px-2 py-0.5 rounded`}>EMAIL</span> . . . .{email}
               </p>
               <p>
-                <span className="writeUp textbody text-tertiary">PHONE</span> . . . .{phone}
+                <span className="writeUp textbody">PHONE</span> . . . .{phone}
               </p>
               <p>
-                <span className="writeUp textbody text-tertiary">LOCATION</span> . . . . {location}
+                <span className="writeUp textbody">LOCATION</span> . . . . {location}
               </p>
               <p>
-                <span className="writeUp textbody text-tertiary">LANGUAGES</span> . . . . {languages}
+                <span className="writeUp textbody">LANGUAGES</span> . . . . {languages}
               </p>
             </div>
 

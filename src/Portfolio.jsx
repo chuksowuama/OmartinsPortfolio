@@ -45,7 +45,7 @@ const Portfolio = () => {
     document.documentElement.classList.toggle("dark",newTheme==="dark")
   }
 
-  console.log("current nav",navControl)
+ 
 
   return (
     <>
@@ -71,7 +71,7 @@ const Portfolio = () => {
             {
                laptop?<main className="lg:grid lg:grid-cols-5 not-last-of-type:lg:ml-0">
               <div className="lg:col-span-2 lg:transform scale-y-103 ">
-                <Herosection heroTheme={theme}/>
+                <Herosection heroTheme={theme} onpage={handlecategoryClick}/>
               </div>
               <div className="lg:col-span-3 bg-primary overflow-y-scroll h-[85vh] custom-scrollbar">
                {webpage==="About" && <About aboutTheme={theme}/>}
@@ -84,7 +84,7 @@ const Portfolio = () => {
             </main>:
               <main className="sm:mt-33 md:mt-0 sm:w-full md:ml-5 ">
               <div className="">
-                 <section id="Home"><Herosection/></section>
+                 <section id="Home"><Herosection onpage={handlecategoryClick} heroTheme={theme} /></section>
                  <section id="About"><About aboutTheme={theme} /></section>
                  <section id="Resume"><Resume resumeTheme={theme}/></section>
                  <section id="Works"><Workd workTheme={theme}/></section>
@@ -98,7 +98,7 @@ const Portfolio = () => {
         </div>
       </div>
       {
-        navControl && <Sidebar closeTheNav={closeNav} slideNavTheme={theme}/>
+        navControl && <Sidebar closeTheNav={closeNav} slideNavTheme={theme} onpage={handlecategoryClick}/>
       }
     </>
   );

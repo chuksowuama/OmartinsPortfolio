@@ -4,9 +4,10 @@ import ContactAdmin from "./ContactAdmin";
 import ResumeAdmin from "./ResumeAdmin";
 import AboutAdmin from "./AboutAdmin";
 import WorksAdmin from "./WorksAdmin";
+import Profile from "./Profile";
 
 const Admin = () => {
-  const [page, setpage] = useState("About");
+  const [page, setpage] = useState("Profile");
 
   return (
     <div className="min-h-screen bg-secondary lg:flex">
@@ -39,6 +40,7 @@ const Admin = () => {
         </header>
 
         <div>
+          {page === "Profile" && <Profile/>}
           {page === "About" && <AboutAdmin/>}
           {page === "Resume" && <ResumeAdmin/>}
           {page === "Works" && <WorksAdmin/>}

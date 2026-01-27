@@ -39,7 +39,7 @@ const Resume = ({ resumeTheme }) => {
               <div className="space-y-10 relative border-l border-neutral-700 sm:pl:2 pl-4 pb-4 w-full">
                 {Resumeinfo.map((item) => (
                   <div>
-                    <span className="text-body text-tertiary border border-tertiary-400 px-2 py-0.5 rounded">
+                    <span className={`text-body border  ${resumeTheme==="light" ?"border-yellow-800 text-yellow-800":"border-yellow-400 text-yellow-400"} px-2 py-0.5 rounded`}>
                       {item.Years}
                     </span>
                     <h3 className="mt-2 font-medium textbody">{item.jobTitle}</h3>
