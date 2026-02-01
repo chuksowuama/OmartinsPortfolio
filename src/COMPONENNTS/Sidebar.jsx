@@ -42,7 +42,7 @@ const Sidebar = ({closeTheNav,slideNavTheme,onpage}) => {
               displayDetails && <div className='flex gap-1.5 items-center mb-4'>
               <img src={displayDetails.profilePic} alt="" className='w-14 h-14 rounded-full shadow-lg' />
               <div>
-                <h2 className='smallHeader'>{displayDetails.ProfileName}</h2>
+                <h2 className='textbody font-bold'>{displayDetails.ProfileName}</h2>
                 <p className='text-sm'>{displayDetails.occupation}</p>
               </div>
              </div>

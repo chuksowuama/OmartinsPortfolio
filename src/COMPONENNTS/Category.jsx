@@ -8,7 +8,7 @@ const Category = ({onpage,cateTheme}) => {
     {
       Navdata && Navdata.map((cate)=>(
                 <div id={cate.id} className='flex md:flex-col  items-center gap-0.5 sm:w-25 md:w-20 sm:p-2 lg:p-2 button' onClick={()=>onpage(cate.title)}> 
-                    <i className={`fa-solid ${cate.icon} sm:text-3xl  md:text-2xl`}></i>
+                    <i className={`fa-solid ${cate.icon} sm:text-md  md:text-2xl`}></i>
                     <span>{cate.title}</span>
             </div>
       ))

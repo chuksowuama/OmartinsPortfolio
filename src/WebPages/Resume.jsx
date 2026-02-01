@@ -43,8 +43,8 @@ const Resume = ({ resumeTheme }) => {
                       {item.Years}
                     </span>
                     <h3 className="mt-2 font-medium textbody">{item.jobTitle}</h3>
-                    <p className="textbody ">
-                      {item.Company} — {item.Location}
+                    <p className="textbody darkmode:text-tertiary font-medium">
+                      {item.Company}  {item.Location}
                     </p>
                     <p className="textbody  mt-2 whitespace-pre-line ">
                       {item.responsibilities}

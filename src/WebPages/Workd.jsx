@@ -38,7 +38,7 @@ const Workd = ({ workTheme }) => {
         {
           WorkData.map((item)=>(
           <a href={item.projectURL} className="block" target="_blank" rel="rel noreferrer" >
-          <div className="p-4 border-2">
+          <div className="p-3 rounded shadow-md hover:shadow-lg transition-shadow duration-300">
           <img
             src={item.projectimg}
             alt={item.projectTitle}

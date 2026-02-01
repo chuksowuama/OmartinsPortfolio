@@ -117,7 +117,7 @@ const Contact = ({ contactTheme }) => {
                   name="message"
                   required
                   id="message"
-                  className="w-full h-30 resize-none border-b border-neutral-300 outline-0 smallHeader focus:border-tertiary focus:border-b-2"
+                  className="w-full h-30 resize-none border-b border-neutral-500 outline-0 smallHeader focus:border-tertiary focus:border-b-2"
                   placeholder="Your Message"
                 ></textarea>
                 <button className="border w-3xs button " type="submit">

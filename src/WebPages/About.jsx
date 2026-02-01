@@ -37,20 +37,20 @@ const[aboutData,setAboutData]=useState(null);
           <div>
             <p className="pageHeader mb-4 pl-4">
               Hello! I’m{" "}
-              <span className="text-yellow-400 font-medium textbody">{fullName}</span>.
+              <span className="text-tertiary font-medium textbody">{fullName}</span>.
             </p>
             <p className="writeUp leading-relaxed textbody pl-4">{professionalSumary}</p>
           </div>
 
           <section>
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-10 h-10 rounded-full border border-yellow-400 flex items-center justify-center text-yellow-400">
+              <div className="w-10 h-10 rounded-full border border-tertiary flex items-center justify-center text-yellow-400">
                 <span className="text-sm">🎓</span>
               </div>
               <h2 className="smallHeader font-semibold">Education</h2>
             </div>
 
-            <div className="space-y-10 relative border-l border-neutral-700 pl-4">
+            <div className="space-y-10 relative pl-4">
               {
                 Education.map((item)=>(
                  <div>
@@ -70,7 +70,7 @@ const[aboutData,setAboutData]=useState(null);
             <div className="grid grid-cols-2 gap-4 writeUp pl-4 pb-4">
               {technicalSkills.length &&
                 technicalSkills.map((skills) => (
-                  <div className={`flex sm:flex-col md:flex-row items-center gap-4 p-4 rounded-md w-full border${aboutTheme==="light" ? " text-primary border-primary" : "text-secondary border-secondary"}`}>
+                  <div className={`flex sm:flex-col md:flex-row items-center gap-4 p-4 rounded-md w-full border${aboutTheme==="light" ? " text-primary border-primary" : "text-secondary border border-secondary"}`}>
                     <div className={`w-12 h-12 flex items-center justify-center rounded-full border ${aboutTheme==="light" ?"border-yellow-800 text-yellow-800":"border-yellow-400 text-yellow-400"} `}>
                       <i
                         className={`fa-brands ${skills.skillIconClass} text-xl`}

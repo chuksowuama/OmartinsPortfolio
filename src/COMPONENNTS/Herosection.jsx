@@ -70,14 +70,14 @@ const Herosection = ({ heroTheme,onpage, }) => {
         </div>
           {
           displayDetails && ( 
-            <div className="text-center space-y-3 pt-1 mb-4">
-              <h1 className="smallHeader">{displayDetails.ProfileName}</h1>
+            <div className="text-center pt-1 mb-4">
+              <h1 className="text-2xl font-bold">{displayDetails.ProfileName}</h1>
               <p className="textbody">{displayDetails.occupation}</p>
             </div>
           )
          }
           <div className="text-center space-y-3 pt-1">
-          <span className="flex gap-4.5 [&>a]:button text-center  justify-center [&>a>i]:text-3xl border-neutral-700 pb-1.5">
+          <span className="flex gap-4.5 [&>a]:button text-center  justify-center [&>a>i]:text-2xl border-neutral-700 pb-1.5">
             {
               socialMedia.map((item)=>(
                 <a href={item.link} target="blanck"><i class={item.icon}></i></a>
